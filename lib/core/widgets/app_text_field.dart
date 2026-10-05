@@ -5,7 +5,10 @@ class AppTextField extends StatelessWidget {
     super.key,
     this.controller,
     this.hintText,
+    this.labelText,
+    this.errorText,
     this.prefixIcon,
+    this.prefixWidget,
     this.suffixIcon,
     this.obscureText = false,
     this.keyboardType,
@@ -13,11 +16,24 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.onSubmitted,
     this.enabled = true,
+    this.autofocus = false,
+    this.maxLines = 1,
+    this.style,
+    this.hintStyle,
+    this.border,
+    this.focusedBorder,
+    this.enabledBorder,
+    this.filled,
+    this.fillColor,
+    this.contentPadding,
   });
 
   final TextEditingController? controller;
   final String? hintText;
+  final String? labelText;
+  final String? errorText;
   final IconData? prefixIcon;
+  final Widget? prefixWidget;
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
@@ -25,6 +41,16 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final bool enabled;
+  final bool autofocus;
+  final int? maxLines;
+  final TextStyle? style;
+  final TextStyle? hintStyle;
+  final InputBorder? border;
+  final InputBorder? focusedBorder;
+  final InputBorder? enabledBorder;
+  final bool? filled;
+  final Color? fillColor;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +62,22 @@ class AppTextField extends StatelessWidget {
       onChanged: onChanged,
       onSubmitted: onSubmitted,
       enabled: enabled,
+      autofocus: autofocus,
+      maxLines: maxLines,
+      style: style,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
+        labelText: labelText,
+        errorText: errorText,
+        hintStyle: hintStyle,
+        prefixIcon: prefixWidget ?? (prefixIcon == null ? null : Icon(prefixIcon)),
         suffixIcon: suffixIcon,
+        border: border,
+        focusedBorder: focusedBorder,
+        enabledBorder: enabledBorder,
+        filled: filled,
+        fillColor: fillColor,
+        contentPadding: contentPadding,
       ),
     );
   }

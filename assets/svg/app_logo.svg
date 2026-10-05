@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Rich warm mocha / espresso radial background -->
+    <radialGradient id="bgGradLighter" cx="50%" cy="46%" r="62%">
+      <stop offset="0%" stop-color="#3D2920" />
+      <stop offset="45%" stop-color="#261913" />
+      <stop offset="85%" stop-color="#180F0B" />
+      <stop offset="100%" stop-color="#120B08" />
+    </radialGradient>
+
+    <!-- Glowing Warm Gold & Champagne Gradient -->
+    <linearGradient id="goldGradBrighter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8E8" />
+      <stop offset="25%" stop-color="#FCE1A8" />
+      <stop offset="65%" stop-color="#E8B964" />
+      <stop offset="100%" stop-color="#B87B2E" />
+    </linearGradient>
+
+    <!-- Radiant Cream / Terracotta Gradient -->
+    <linearGradient id="terracottaVibrant" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F28C55" />
+      <stop offset="100%" stop-color="#BA4E20" />
+    </linearGradient>
+
+    <!-- Luminous Steam Gradient -->
+    <linearGradient id="steamGradLighter" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FCE1A8" stop-opacity="0.85" />
+      <stop offset="45%" stop-color="#FFF8E8" stop-opacity="0.65" />
+      <stop offset="80%" stop-color="#FFF8E8" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#FFF8E8" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Warm Soft Ambient Glow -->
+    <filter id="luminousGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Curved Text Arc for Subtitle -->
+    <path id="bottomTextPathProper" d="M 100,410 A 185 185 0 0,0 412,410" fill="none" />
+  </defs>
+
+  <!-- Circular background with NO square corners or white outer padding - pure circular emblem fill -->
+  <circle cx="256" cy="256" r="254" fill="url(#bgGradLighter)" stroke="url(#goldGradBrighter)" stroke-width="3" />
+
+  <!-- Outer Filigree Frames reaching edge-to-edge -->
+  <circle cx="256" cy="256" r="244" fill="none" stroke="url(#goldGradBrighter)" stroke-width="1.8" stroke-opacity="0.45" />
+  <circle cx="256" cy="256" r="230" fill="none" stroke="url(#goldGradBrighter)" stroke-width="1.4" stroke-dasharray="3.5 5.5" stroke-opacity="0.65" />
+  <circle cx="256" cy="256" r="218" fill="none" stroke="url(#goldGradBrighter)" stroke-width="3" />
+
+  <!-- Cardinal Accent Diamonds / Pips -->
+  <polygon points="256,12 262,23 256,34 250,23" fill="url(#goldGradBrighter)" />
+  <polygon points="256,500 262,489 256,478 250,489" fill="url(#goldGradBrighter)" />
+  <polygon points="12,256 23,262 34,256 23,250" fill="url(#goldGradBrighter)" />
+  <polygon points="500,256 489,262 478,256 489,250" fill="url(#goldGradBrighter)" />
+
+  <!-- Top Crown Filigree -->
+  <g id="top-filigree" opacity="0.95">
+    <circle cx="256" cy="74" r="4" fill="url(#goldGradBrighter)" />
+    <path d="M216 74 Q236 67 256 74 Q276 67 296 74" fill="none" stroke="url(#goldGradBrighter)" stroke-width="2" stroke-linecap="round" />
+    <polygon points="256,58 261,66 256,71 251,66" fill="url(#goldGradBrighter)" />
+  </g>
+
+  <!-- Botanical Branches & Coffee Berries scaled outwards to frame cup -->
+  <g id="botanicals" opacity="0.95">
+    <!-- Left Leaves -->
+    <path d="M112 245 C96 223 100 190 123 179 C126 206 120 228 112 245 Z" fill="url(#goldGradBrighter)" />
+    <path d="M96 294 C83 277 86 250 107 241 C109 264 105 283 96 294 Z" fill="url(#goldGradBrighter)" />
+    <path d="M138 338 C124 325 124 300 142 289 C147 310 143 327 138 338 Z" fill="url(#goldGradBrighter)" />
+    <!-- Left Berries -->
+    <circle cx="127" cy="262" r="5.5" fill="url(#terracottaVibrant)" />
+    <circle cx="115" cy="273" r="5" fill="url(#terracottaVibrant)" />
+
+    <!-- Right Leaves -->
+    <path d="M400 245 C416 223 412 190 389 179 C386 206 392 228 400 245 Z" fill="url(#goldGradBrighter)" />
+    <path d="M416 294 C429 277 426 250 405 241 C403 264 407 283 416 294 Z" fill="url(#goldGradBrighter)" />
+    <path d="M374 338 C388 325 388 300 370 289 C365 310 369 327 374 338 Z" fill="url(#goldGradBrighter)" />
+    <!-- Right Berries -->
+    <circle cx="385" cy="262" r="5.5" fill="url(#terracottaVibrant)" />
+    <circle cx="397" cy="273" r="5" fill="url(#terracottaVibrant)" />
+  </g>
+
+  <!-- Luminous Rising Steam Ribbons -->
+  <g id="steam" stroke="url(#steamGradLighter)" stroke-linecap="round" fill="none">
+    <path d="M256 160 C250 140 266 124 256 102 C247 80 260 65 256 46" stroke-width="5" />
+    <path d="M225 156 C217 140 230 126 223 108 C214 91 226 78 221 62" stroke-width="3.5" />
+    <path d="M287 156 C295 140 282 126 289 108 C298 91 286 78 291 62" stroke-width="3.5" />
+  </g>
+
+  <!-- Main Cup and Saucer Emblem -->
+  <g id="cup-assembly" transform="translate(0, -6)">
+    <!-- Saucer Plate -->
+    <ellipse cx="256" cy="310" rx="108" ry="14" fill="#241712" stroke="url(#goldGradBrighter)" stroke-width="3.8" />
+    <ellipse cx="256" cy="308" rx="80" ry="8.5" fill="none" stroke="url(#goldGradBrighter)" stroke-width="2" stroke-opacity="0.8" />
+
+    <!-- Cup Rim & Crema Bed -->
+    <ellipse cx="256" cy="186" rx="76" ry="17" fill="#1C120D" stroke="url(#goldGradBrighter)" stroke-width="3.5" />
+    <!-- Golden Crema -->
+    <ellipse cx="256" cy="186" rx="70" ry="13.5" fill="url(#terracottaVibrant)" />
+    
+    <!-- Heart Latte Art -->
+    <path d="M256 193 C247 182 235 182 238 176 C241 170 251 173 256 181 C261 173 271 170 274 176 C277 182 265 182 256 193 Z" fill="#FFF9ED" />
+
+    <!-- Front Cup Ceramic Body -->
+    <path d="M180 186 C182 248 202 293 256 293 C310 293 330 248 332 186 Z" 
+          fill="url(#bgGradLighter)" 
+          stroke="url(#goldGradBrighter)" 
+          stroke-width="5" 
+          stroke-linejoin="round" />
+
+    <!-- Ceramic Lustre Sheen -->
+    <path d="M197 200 C199 240 212 273 246 282" fill="none" stroke="url(#goldGradBrighter)" stroke-width="2.8" stroke-linecap="round" stroke-opacity="0.5" />
+
+    <!-- Elegant Curved Handle -->
+    <path d="M326 197 C360 197 375 221 373 246 C370 268 349 279 315 275" 
+          fill="none" 
+          stroke="url(#goldGradBrighter)" 
+          stroke-width="5.5" 
+          stroke-linecap="round" />
+    <path d="M324 210 C347 210 358 223 356 241 C354 257 341 262 317 260" 
+          fill="none" 
+          stroke="url(#goldGradBrighter)" 
+          stroke-width="2.2" 
+          stroke-linecap="round" 
+          stroke-opacity="0.6" />
+
+    <!-- Center Coffee Bean Seal -->
+    <g transform="translate(256, 239) scale(1.1)">
+      <path d="M-15 -19 C-24 -8 -24 8 -15 19 C-5 29 11 27 18 17 C26 5 24 -11 16 -20 C6 -28 -7 -27 -15 -19 Z" 
+            fill="url(#goldGradBrighter)" />
+      <path d="M-7 -17 C-2 -10 6 -6 1 0 C-4 6 5 11 8 16" 
+            fill="none" 
+            stroke="#261913" 
+            stroke-width="3.2" 
+            stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- Typography & Structural Balance -->
+  <!-- Flanking Accent Lines -->
+  <g opacity="0.85">
+    <line x1="112" y1="360" x2="152" y2="360" stroke="url(#goldGradBrighter)" stroke-width="2" />
+    <circle cx="156" cy="360" r="2.8" fill="url(#goldGradBrighter)" />
+    <circle cx="356" cy="360" r="2.8" fill="url(#goldGradBrighter)" />
+    <line x1="360" y1="360" x2="400" y2="360" stroke="url(#goldGradBrighter)" stroke-width="2" />
+  </g>
+
+  <!-- Primary Title: "THE COFFEE LAB" -->
+  <text x="256" y="369" 
+        text-anchor="middle" 
+        font-family="'Playfair Display', 'Cinzel', 'Georgia', serif" 
+        font-size="24" 
+        font-weight="800" 
+        letter-spacing="4" 
+        fill="url(#goldGradBrighter)"
+        filter="url(#luminousGlow)">
+    THE COFFEE LAB
+  </text>
+
+  <!-- Subtitle: "SPECIALTY BEANS & BREW" along inner circular arc with clean tracking -->
+  <text font-family="'Montserrat', 'Inter', -apple-system, sans-serif" 
+        font-size="10.5" 
+        font-weight="700" 
+        letter-spacing="5.5" 
+        fill="#F39C6B">
+    <textPath href="#bottomTextPathProper" startOffset="50%" text-anchor="middle">
+      SPECIALTY BEANS &amp; BREW
+    </textPath>
+  </text>
+
+  <!-- Crisp Star Accents on Lower Arc -->
+  <g fill="url(#goldGradBrighter)" opacity="0.95">
+    <polygon points="166,420 168.5,424.5 173,424.5 169.5,428 171,432.5 166,429 161,432.5 162.5,428 159,424.5 163.5,424.5" />
+    <polygon points="346,420 348.5,424.5 353,424.5 349.5,428 351,432.5 346,429 341,432.5 342.5,428 339,424.5 343.5,424.5" />
+  </g>
+</svg>

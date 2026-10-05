@@ -8,39 +8,70 @@ class AppCard extends StatelessWidget {
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(20),
+    this.margin,
     this.borderRadius = 20,
+    this.color,
+    this.borderColor,
+    this.boxShadow,
+    this.width,
+    this.height,
+    this.onTap,
   });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? margin;
   final double borderRadius;
+  final Color? color;
+  final Color? borderColor;
+  final List<BoxShadow>? boxShadow;
+  final double? width;
+  final double? height;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      width: double.infinity,
+    final cardContent = Container(
+      width: width ?? double.infinity,
+      height: height,
+      margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.05) : colors.surface,
+        color: color ?? (isDark ? Colors.white.withValues(alpha: 0.05) : colors.surface),
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.08)
-              : const Color(0xFFDCE1ED),
+          color: borderColor ??
+              (isDark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : const Color(0xFFDCE1ED)),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
-            blurRadius: 30,
-            offset: const Offset(0, 16),
-          ),
-        ],
+        boxShadow: boxShadow ??
+            [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
+                blurRadius: 30,
+                offset: const Offset(0, 16),
+              ),
+            ],
       ),
       child: child,
     );
+
+    if (onTap != null) {
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(borderRadius),
+          onTap: onTap,
+          child: cardContent,
+        ),
+      );
+    }
+
+    return cardContent;
   }
 }
 

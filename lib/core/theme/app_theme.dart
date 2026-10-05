@@ -2,34 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color background = Color(0xFF070B18);
-  static const Color surface = Color(0xFF12182B);
-  static const Color lightBackground = Color(0xFFF5F7FC);
+  // Coffee Signature Colors
+  static const Color primaryCoffee = Color(0xFFC67C4E); // Warm Caramel / Mocha
+  static const Color primaryDark = Color(0xFF8D4E28);
+  static const Color espressoBlack = Color(0xFF121212); // Deep Espresso
+  static const Color darkRoast = Color(0xFF1C1815); // Dark Roast Container
+  static const Color cardDark = Color(0xFF231F1C); // Dark Card Surface
+  static const Color creamWhite = Color(0xFFF9F5F0); // Warm milk foam / latte
+  static const Color softBrown = Color(0xFFEDE0D4); // Soft beige accent
+  static const Color goldenStar = Color(0xFFFBBE21); // Rating gold
+  static const Color accentHeart = Color(0xFFED5151); // Favorite heart
+  static const Color mutedTextLight = Color(0xFF9E9289);
+  static const Color mutedTextDark = Color(0xFFA59B93);
+
+  // Backwards-compatible theme tokens
+  static const Color background = espressoBlack;
+  static const Color surface = darkRoast;
+  static const Color lightBackground = creamWhite;
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color accent = Color(0xFF7C8CFF);
-  static const Color mint = Color(0xFF3EE0B2);
+  static const Color accent = primaryCoffee;
+  static const Color mint = Color(0xFFD4A373); // Soft caramel
 
   static ThemeData dark() {
     return _theme(
       brightness: Brightness.dark,
-      backgroundColor: background,
-      surfaceColor: surface,
+      backgroundColor: espressoBlack,
+      surfaceColor: darkRoast,
       foregroundColor: Colors.white,
-      mutedColor: Colors.white.withValues(alpha: 0.62),
-      fieldFillColor: Colors.white.withValues(alpha: 0.06),
-      fieldBorderColor: Colors.white.withValues(alpha: 0.08),
+      mutedColor: mutedTextDark,
+      fieldFillColor: Colors.white.withValues(alpha: 0.07),
+      fieldBorderColor: Colors.white.withValues(alpha: 0.12),
     );
   }
 
   static ThemeData light() {
     return _theme(
       brightness: Brightness.light,
-      backgroundColor: lightBackground,
+      backgroundColor: creamWhite,
       surfaceColor: lightSurface,
-      foregroundColor: const Color(0xFF17203A),
-      mutedColor: const Color(0xFF65708A),
-      fieldFillColor: const Color(0xFFF0F2F8),
-      fieldBorderColor: const Color(0xFFDCE1ED),
+      foregroundColor: const Color(0xFF261912),
+      mutedColor: const Color(0xFF7E726A),
+      fieldFillColor: const Color(0xFFF2ECE5),
+      fieldBorderColor: const Color(0xFFE5DDD5),
     );
   }
 
@@ -48,19 +62,19 @@ class AppTheme {
       scaffoldBackgroundColor: backgroundColor,
       colorScheme: ColorScheme(
         brightness: brightness,
-        primary: accent,
-        secondary: mint,
+        primary: primaryCoffee,
+        secondary: const Color(0xFFD4A373),
         surface: surfaceColor,
         onSurface: foregroundColor,
         onPrimary: Colors.white,
-        onSecondary: const Color(0xFF06251D),
+        onSecondary: Colors.white,
         error: const Color(0xFFBA1A1A),
         onError: Colors.white,
       ),
     );
 
     return base.copyWith(
-      textTheme: GoogleFonts.outfitTextTheme(
+      textTheme: GoogleFonts.soraTextTheme(
         base.textTheme,
       ).apply(bodyColor: foregroundColor, displayColor: foregroundColor),
       inputDecorationTheme: InputDecorationTheme(
@@ -81,7 +95,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: accent, width: 1.4),
+          borderSide: const BorderSide(color: primaryCoffee, width: 1.6),
         ),
       ),
     );
@@ -92,6 +106,6 @@ class AppTheme {
 
   static Color muted(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-      ? Colors.white.withValues(alpha: 0.62)
-      : const Color(0xFF65708A);
+          ? mutedTextDark
+          : const Color(0xFF7E726A);
 }

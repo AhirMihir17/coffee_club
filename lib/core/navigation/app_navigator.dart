@@ -16,6 +16,26 @@ class AppNavigator {
     );
   }
 
+  /// Replaces the current screen with a smooth fade animation.
+  static Future<T?> pushFadeReplacement<T, TO>(
+    BuildContext context,
+    Widget page, {
+    Duration duration = const Duration(milliseconds: 650),
+    TO? result,
+  }) {
+    return Navigator.of(context).pushReplacement<T, TO>(
+      PageRouteBuilder<T>(
+        transitionDuration: duration,
+        reverseTransitionDuration: duration,
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+      result: result,
+    );
+  }
+
   /// Navigates to a new screen and removes previous screens based on the predicate.
   /// Defaults to removing all previous screens if no predicate is given.
   static Future<T?> pushAndRemoveUntil<T>(

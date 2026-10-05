@@ -37,9 +37,13 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
     this.icon,
     this.height = 56,
+    this.width,
+    this.backgroundColor,
+    this.foregroundColor = Colors.white,
+    this.borderRadius,
+    this.padding,
   })  : _variant = _AppButtonVariant.primary,
-        backgroundColor = null,
-        foregroundColor = Colors.white;
+        borderColor = null;
 
   const AppButton.outlined({
     super.key,
@@ -49,9 +53,13 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
     this.icon,
     this.height = 52,
-  })  : _variant = _AppButtonVariant.outlined,
-        backgroundColor = null,
-        foregroundColor = Colors.white;
+    this.width,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.borderColor,
+    this.borderRadius,
+    this.padding,
+  })  : _variant = _AppButtonVariant.outlined;
 
   const AppButton.social({
     super.key,
@@ -63,7 +71,11 @@ class AppButton extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.foregroundColor = const Color(0xFF1B1B1B),
     this.height = 54,
-  }) : _variant = _AppButtonVariant.social;
+    this.width,
+    this.borderRadius,
+    this.padding,
+  })  : _variant = _AppButtonVariant.social,
+        borderColor = null;
 
   const AppButton.text({
     super.key,
@@ -74,8 +86,12 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.foregroundColor,
     this.height = 40,
+    this.width,
+    this.padding,
   })  : _variant = _AppButtonVariant.text,
-        backgroundColor = null;
+        backgroundColor = null,
+        borderColor = null,
+        borderRadius = null;
 
   final String label;
   final VoidCallback? onPressed;
@@ -83,8 +99,12 @@ class AppButton extends StatelessWidget {
   final bool enabled;
   final Widget? icon;
   final double height;
+  final double? width;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final Color? borderColor;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
   final _AppButtonVariant _variant;
 
   bool get _isEnabled => enabled && !isLoading && onPressed != null;
@@ -97,21 +117,56 @@ class AppButton extends StatelessWidget {
           onPressed: _isEnabled ? onPressed : null,
           isLoading: isLoading,
           height: height,
+          width: width,
+          icon: icon,
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          borderRadius: borderRadius,
+          padding: padding,
         ),
       _AppButtonVariant.outlined => SizedBox(
-          width: double.infinity,
+          width: width ?? double.infinity,
           height: height,
           child: OutlinedButton(
             onPressed: _isEnabled ? onPressed : null,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: foregroundColor ?? AppTheme.primaryCoffee,
+              side: BorderSide(
+                color: borderColor ?? AppTheme.primaryCoffee,
+                width: 1.5,
+              ),
+              padding: padding,
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(16),
+              ),
+            ),
             child: isLoading
                 ? const AppLoading()
-                : AppText.label(
-                    label,
-                    fontWeight: FontWeight.w600,
-                  ),
+                : (icon != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          icon!,
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: AppText.label(
+                              label,
+                              fontWeight: FontWeight.w600,
+                              color: foregroundColor ?? AppTheme.primaryCoffee,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )
+                    : AppText.label(
+                        label,
+                        fontWeight: FontWeight.w600,
+                        color: foregroundColor ?? AppTheme.primaryCoffee,
+                      )),
           ),
         ),
       _AppButtonVariant.social => SizedBox(
+          width: width ?? double.infinity,
           height: height,
           child: ElevatedButton(
             onPressed: _isEnabled ? onPressed : null,
@@ -121,8 +176,9 @@ class AppButton extends StatelessWidget {
               foregroundColor: foregroundColor,
               disabledBackgroundColor:
                   backgroundColor?.withValues(alpha: 0.7),
+              padding: padding,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: borderRadius ?? BorderRadius.circular(16),
               ),
             ),
             child: isLoading
@@ -134,22 +190,44 @@ class AppButton extends StatelessWidget {
                         icon!,
                         const SizedBox(width: 10),
                       ],
-                      AppText(
-                        label,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: foregroundColor,
+                      Flexible(
+                        child: AppText(
+                          label,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: foregroundColor,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
           ),
         ),
-      _AppButtonVariant.text => TextButton(
-          onPressed: _isEnabled ? onPressed : null,
-          child: AppText(
-            label,
-            color: foregroundColor ?? Colors.white.withValues(alpha: 0.72),
-            fontWeight: FontWeight.w500,
+      _AppButtonVariant.text => SizedBox(
+          width: width,
+          height: height,
+          child: TextButton(
+            onPressed: _isEnabled ? onPressed : null,
+            style: TextButton.styleFrom(
+              padding: padding ?? const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[
+                  icon!,
+                  const SizedBox(width: 6),
+                ],
+                AppText(
+                  label,
+                  fontSize: 12.5,
+                  color: foregroundColor ?? AppTheme.primaryCoffee,
+                  fontWeight: FontWeight.w600,
+                ),
+              ],
+            ),
           ),
         ),
     };
@@ -164,39 +242,60 @@ class _PrimaryButton extends StatelessWidget {
     required this.onPressed,
     required this.isLoading,
     required this.height,
+    this.width,
+    this.icon,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.borderRadius,
+    this.padding,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final bool isLoading;
   final double height;
+  final double? width;
+  final Widget? icon;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null;
+    final rRadius = borderRadius ?? BorderRadius.circular(16);
 
     return SizedBox(
       height: height,
+      width: width ?? double.infinity,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            colors: enabled
-                ? const [AppTheme.accent, Color(0xFF5B6CFF)]
-                : [
-                    Colors.white.withValues(alpha: 0.16),
-                    Colors.white.withValues(alpha: 0.12),
-                  ],
-          ),
-          boxShadow: enabled
-              ? [
-                  BoxShadow(
-                    color: AppTheme.accent.withValues(alpha: 0.35),
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                  ),
-                ]
+          borderRadius: rRadius,
+          gradient: backgroundColor == null
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: enabled
+                      ? const [
+                          Color(0xFFC67C4E),
+                          Color(0xFFA25B2C),
+                        ]
+                      : const [
+                          Color(0xFFB8784E),
+                          Color(0xFF8F5128),
+                        ],
+                )
               : null,
+          color: backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: (backgroundColor ?? const Color(0xFFC67C4E))
+                  .withValues(alpha: enabled ? 0.35 : 0.15),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: ElevatedButton(
           onPressed: onPressed,
@@ -205,18 +304,38 @@ class _PrimaryButton extends StatelessWidget {
             backgroundColor: Colors.transparent,
             disabledBackgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
-            foregroundColor: Colors.white,
+            foregroundColor: foregroundColor ?? Colors.white,
+            disabledForegroundColor: (foregroundColor ?? Colors.white).withValues(alpha: 0.8),
+            padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: rRadius,
             ),
           ),
           child: isLoading
-              ? const AppLoading()
-              : AppText(
-                  label,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              ? AppLoading(color: foregroundColor ?? Colors.white)
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (icon != null) ...[
+                      icon!,
+                      const SizedBox(width: 8),
+                    ],
+                    Flexible(
+                      child: AppText(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: foregroundColor ?? Colors.white,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
         ),
       ),

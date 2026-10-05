@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../service/firebase_auth_service.dart';
 import '../model/user_model.dart';
+import '../service/firebase_auth_service.dart';
 
 class AuthRepository {
   AuthRepository(this.authService);
@@ -14,21 +14,43 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    final UserCredential credential = await _auth.signInWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
+    try {
+      final UserCredential credential = await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
 
-    final User user = credential.user!;
+      final User? user = credential.user;
+      if (user == null) {
+        throw FirebaseAuthException(
+          code: 'user-not-found',
+          message: 'User details not found after signing in.',
+        );
+      }
 
-    return AppUser.fromFirebaseUser(user);
+      return AppUser.fromFirebaseUser(user);
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Failed to sign in: ${e.toString()}');
+    }
   }
 
   Future<AppUser> signInWithGoogle() async {
-    throw UnimplementedError();
+    try {
+      throw UnimplementedError('Google sign in is not configured yet.');
+    } catch (_) {
+      rethrow;
+    }
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Failed to sign out: ${e.toString()}');
+    }
   }
 }
