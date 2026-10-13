@@ -18,6 +18,11 @@ class HomeSuccess extends HomeState {
   final String searchQuery;
   final String selectedRoast;
   final List<String> categories;
+  final bool isSyncing;
+  final String? statusMessage;
+  final bool isLiveFirestore;
+
+  final Set<String> expandedDocIds;
 
   const HomeSuccess({
     this.allCoffees = CoffeeRepository.sampleCoffees,
@@ -25,6 +30,10 @@ class HomeSuccess extends HomeState {
     this.searchQuery = '',
     this.selectedRoast = 'All Roasts',
     this.categories = CoffeeRepository.categories,
+    this.isSyncing = false,
+    this.statusMessage,
+    this.isLiveFirestore = true,
+    this.expandedDocIds = const <String>{},
   });
 
   List<CoffeeItem> get filteredCoffees {
@@ -47,6 +56,10 @@ class HomeSuccess extends HomeState {
     String? searchQuery,
     String? selectedRoast,
     List<String>? categories,
+    bool? isSyncing,
+    String? statusMessage,
+    bool? isLiveFirestore,
+    Set<String>? expandedDocIds,
   }) {
     return HomeSuccess(
       allCoffees: allCoffees ?? this.allCoffees,
@@ -54,6 +67,10 @@ class HomeSuccess extends HomeState {
       searchQuery: searchQuery ?? this.searchQuery,
       selectedRoast: selectedRoast ?? this.selectedRoast,
       categories: categories ?? this.categories,
+      isSyncing: isSyncing ?? this.isSyncing,
+      statusMessage: statusMessage ?? this.statusMessage,
+      isLiveFirestore: isLiveFirestore ?? this.isLiveFirestore,
+      expandedDocIds: expandedDocIds ?? this.expandedDocIds,
     );
   }
 }

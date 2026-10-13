@@ -8,7 +8,7 @@ import '../../core/navigation/app_navigator.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/toast_utils.dart';
 import '../../core/widgets/app_widgets.dart';
-import '../../coffee/screens/main/coffee_main_screen.dart';
+import '../../coffee/screens/coffee_welcome_screen.dart';
 import '../login/login_screen.dart';
 import 'cubit/signup_cubit.dart';
 import 'cubit/signup_state.dart';
@@ -33,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
           );
           AppNavigator.pushAndRemoveUntil(
             context,
-            CoffeeMainScreen(user: appUser),
+            CoffeeWelcomeScreen(user: appUser),
           );
         }
 
@@ -319,8 +319,13 @@ class _SignUpFormState extends State<_SignUpForm> {
               errorText: cubit.confirmPasswordValidationError,
               onChanged: cubit.updateConfirmPassword,
               onSubmitted: (_) {
-                if (cubit.isValid && !isLoading) {
-                  cubit.signUp();
+                if (!isLoading) {
+                  cubit.signUp(
+                    name: _nameController.text,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    confirmPassword: _confirmPasswordController.text,
+                  );
                 }
               },
               suffixIcon: IconButton(
@@ -380,9 +385,14 @@ class _SignUpFormState extends State<_SignUpForm> {
             AppButton.primary(
               label: AppStrings.createAccount,
               isLoading: isLoading,
-              onPressed: cubit.isValid && !isLoading
-                  ? () => cubit.signUp()
-                  : null,
+              onPressed: isLoading
+                  ? null
+                  : () => cubit.signUp(
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        confirmPassword: _confirmPasswordController.text,
+                      ),
             ),
           ],
         );

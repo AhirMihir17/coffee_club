@@ -20,6 +20,7 @@ class AppTextField extends StatelessWidget {
     this.maxLines = 1,
     this.style,
     this.hintStyle,
+    this.cursorColor,
     this.border,
     this.focusedBorder,
     this.enabledBorder,
@@ -45,6 +46,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLines;
   final TextStyle? style;
   final TextStyle? hintStyle;
+  final Color? cursorColor;
   final InputBorder? border;
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
@@ -65,6 +67,7 @@ class AppTextField extends StatelessWidget {
       autofocus: autofocus,
       maxLines: maxLines,
       style: style,
+      cursorColor: cursorColor,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,

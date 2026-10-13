@@ -12,7 +12,7 @@ class LoginCubit extends Cubit<LoginState> {
   bool _rememberMe = true;
   bool _isShimmerLoading = false;
 
-  LoginCubit(this.authRepository) : super(const LoginInitial());
+  LoginCubit(this.authRepository) : super(LoginInitial());
 
   String get email => _email;
   String get password => _password;
@@ -20,7 +20,8 @@ class LoginCubit extends Cubit<LoginState> {
   bool get rememberMe => _rememberMe;
   bool get isShimmerLoading => _isShimmerLoading;
 
-  bool get isEmailValid => _email.trim().isNotEmpty && _email.contains('@');
+  bool get isEmailValid =>
+      _email.trim().isNotEmpty && _email.contains('@');
   bool get isPasswordValid => _password.length >= 6;
   bool get isValid => isEmailValid && isPasswordValid;
 
@@ -35,7 +36,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void _emitInitial() {
-    emit(const LoginInitial());
+    emit(LoginInitial());
   }
 
   void updateEmail(String email) {
@@ -67,14 +68,36 @@ class LoginCubit extends Cubit<LoginState> {
     _emitInitial();
   }
 
+  void reset() {
+    _email = '';
+    _password = '';
+    _isPasswordVisible = false;
+    _rememberMe = true;
+    _isShimmerLoading = false;
+    _emitInitial();
+  }
+
   Future<void> logIn({String? email, String? password}) async {
     final targetEmail = (email ?? _email).trim();
     final targetPassword = password ?? _password;
 
-    if (targetEmail.isEmpty || targetPassword.length < 6) {
-      emit(const LoginError(
-        'Please enter a valid email and 6+ character password.',
-      ));
+    if (targetEmail.isEmpty) {
+      emit(const LoginError('Please enter your email address.'));
+      return;
+    }
+
+    if (!targetEmail.contains('@')) {
+      emit(const LoginError('Please enter a valid email address.'));
+      return;
+    }
+
+    if (targetPassword.isEmpty) {
+      emit(const LoginError('Please enter your password.'));
+      return;
+    }
+
+    if (targetPassword.length < 6) {
+      emit(const LoginError('Password must be at least 6 characters.'));
       return;
     }
 
@@ -113,7 +136,7 @@ class LoginCubit extends Cubit<LoginState> {
       _password = '';
       _isPasswordVisible = false;
       _isShimmerLoading = false;
-      emit(const LoginInitial());
+      emit(LoginInitial());
     } catch (e) {
       emit(LoginError('Failed to sign out: ${e.toString()}'));
     }

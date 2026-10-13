@@ -99,8 +99,11 @@ class _LoginFormState extends State<LoginForm> {
               errorText: cubit.passwordValidationError,
               onChanged: cubit.updatePassword,
               onSubmitted: (_) {
-                if (cubit.isValid && !isLoading) {
-                  cubit.logIn();
+                if (!isLoading) {
+                  cubit.logIn(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  );
                 }
               },
               suffixIcon: IconButton(
@@ -184,8 +187,12 @@ class _LoginFormState extends State<LoginForm> {
             AppButton.primary(
               label: AppStrings.signIn,
               isLoading: isLoading,
-              onPressed:
-                  cubit.isValid && !isLoading ? () => cubit.logIn() : null,
+              onPressed: isLoading
+                  ? null
+                  : () => cubit.logIn(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ),
             ),
           ],
         );

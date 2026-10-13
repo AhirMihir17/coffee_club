@@ -17,6 +17,7 @@ import 'coffee/screens/main/cubit/navigation_cubit.dart';
 import 'coffee/screens/profile/cubit/profile_cubit.dart';
 import 'core/constants/strings.dart';
 import 'core/service/firebase_auth_service.dart';
+import 'core/service/firestore_service.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/splash/splash_screen.dart';
 
@@ -26,6 +27,7 @@ class CoffeeClubApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = FirebaseAuthService();
+    final firestoreService = FirestoreService();
 
     return MultiBlocProvider(
       providers: [
@@ -49,13 +51,13 @@ class CoffeeClubApp extends StatelessWidget {
           create: (_) => NavigationCubit(),
         ),
         BlocProvider<HomeCubit>(
-          create: (_) => HomeCubit(),
+          create: (_) => HomeCubit(firestoreService: firestoreService),
         ),
         BlocProvider<CartCubit>(
           create: (_) => CartCubit(),
         ),
         BlocProvider<FavoritesCubit>(
-          create: (_) => FavoritesCubit(),
+          create: (_) => FavoritesCubit(firestoreService: firestoreService),
         ),
         BlocProvider<ProfileCubit>(
           create: (_) => ProfileCubit(),

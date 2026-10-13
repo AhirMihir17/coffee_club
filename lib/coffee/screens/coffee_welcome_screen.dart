@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/images.dart';
 import '../../core/constants/strings.dart';
 import '../../core/model/user_model.dart';
+import '../../core/navigation/app_navigator.dart';
 import '../../core/widgets/app_widgets.dart';
 import 'main/coffee_main_screen.dart';
 
@@ -80,10 +81,9 @@ class CoffeeWelcomeScreen extends StatelessWidget {
                   height: 56,
                   borderRadius: BorderRadius.circular(18),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => CoffeeMainScreen(user: user),
-                      ),
+                    AppNavigator.pushAndRemoveUntil(
+                      context,
+                      CoffeeMainScreen(user: user),
                     );
                   },
                 ),

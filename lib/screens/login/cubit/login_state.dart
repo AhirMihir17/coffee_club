@@ -4,8 +4,20 @@ abstract class LoginState {
   const LoginState();
 }
 
+int _loginStateCounter = 0;
+
 class LoginInitial extends LoginState {
-  const LoginInitial();
+  final int id;
+
+  LoginInitial([int? id]) : id = id ?? ++_loginStateCounter;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LoginInitial && other.id == id);
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class LoginLoading extends LoginState {

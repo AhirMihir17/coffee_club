@@ -123,6 +123,7 @@ class _CoffeeMainScreenBody extends StatelessWidget {
         ];
 
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor:
               isDark ? AppTheme.espressoBlack : AppTheme.creamWhite,
           body: IndexedStack(

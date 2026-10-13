@@ -1,1 +1,25 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"fir-learning-e0772","appId":"1:389249323011:android:a83cc8b7bc78e3a4bcbe36","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"fir-learning-e0772","configurations":{"android":"1:389249323011:android:a83cc8b7bc78e3a4bcbe36","ios":"1:389249323011:ios:3eb6c6e7a78f2bc1bcbe36"}}}}}}
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "fir-learning-e0772",
+          "appId": "1:389249323011:android:a83cc8b7bc78e3a4bcbe36",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "fir-learning-e0772",
+          "configurations": {
+            "android": "1:389249323011:android:a83cc8b7bc78e3a4bcbe36",
+            "ios": "1:389249323011:ios:3eb6c6e7a78f2bc1bcbe36"
+          }
+        }
+      }
+    }
+  }
+}

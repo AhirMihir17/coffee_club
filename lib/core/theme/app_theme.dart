@@ -101,11 +101,30 @@ class AppTheme {
     );
   }
 
+  static const Color darkText = Color(0xFF241913);
+
   static Color foreground(BuildContext context) =>
-      Theme.of(context).colorScheme.onSurface;
+      Theme.of(context).brightness == Brightness.dark
+          ? Colors.white
+          : darkText;
 
   static Color muted(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? mutedTextDark
           : const Color(0xFF7E726A);
+
+  static Color cardBackground(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? cardDark
+          : creamWhite;
+
+  static Color surfaceBackground(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? darkRoast
+          : lightSurface;
+
+  static Color border(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? Colors.white.withValues(alpha: 0.1)
+          : softBrown;
 }

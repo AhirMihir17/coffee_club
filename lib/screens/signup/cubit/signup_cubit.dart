@@ -16,7 +16,7 @@ class SignupCubit extends Cubit<SignupState> {
   bool _agreeToTerms = true;
   bool _isShimmerLoading = false;
 
-  SignupCubit(this.signupRepository) : super(const SignupInitial());
+  SignupCubit(this.signupRepository) : super(SignupInitial());
 
   String get name => _name;
   String get email => _email;
@@ -60,7 +60,7 @@ class SignupCubit extends Cubit<SignupState> {
   }
 
   void _emitInitial() {
-    emit(const SignupInitial());
+    emit(SignupInitial());
   }
 
   void updateName(String name) {
@@ -107,9 +107,63 @@ class SignupCubit extends Cubit<SignupState> {
     _emitInitial();
   }
 
-  Future<void> signUp() async {
-    if (!isValid) {
-      emit(const SignupError('Please fill out all required fields correctly.'));
+  void reset() {
+    _name = '';
+    _email = '';
+    _password = '';
+    _confirmPassword = '';
+    _isPasswordVisible = false;
+    _isConfirmPasswordVisible = false;
+    _agreeToTerms = true;
+    _isShimmerLoading = false;
+    _emitInitial();
+  }
+
+  Future<void> signUp({
+    String? name,
+    String? email,
+    String? password,
+    String? confirmPassword,
+  }) async {
+    final targetName = (name ?? _name).trim();
+    final targetEmail = (email ?? _email).trim();
+    final targetPassword = password ?? _password;
+    final targetConfirmPassword = confirmPassword ?? _confirmPassword;
+
+    if (targetName.isEmpty) {
+      emit(const SignupError('Please enter your full name.'));
+      return;
+    }
+    if (targetName.length < 2) {
+      emit(const SignupError('Name must be at least 2 characters.'));
+      return;
+    }
+    if (targetEmail.isEmpty) {
+      emit(const SignupError('Please enter your email address.'));
+      return;
+    }
+    if (!targetEmail.contains('@')) {
+      emit(const SignupError('Please enter a valid email address.'));
+      return;
+    }
+    if (targetPassword.isEmpty) {
+      emit(const SignupError('Please enter a password.'));
+      return;
+    }
+    if (targetPassword.length < 6) {
+      emit(const SignupError('Password must be at least 6 characters.'));
+      return;
+    }
+    if (targetConfirmPassword.isEmpty) {
+      emit(const SignupError('Please confirm your password.'));
+      return;
+    }
+    if (targetPassword != targetConfirmPassword) {
+      emit(const SignupError('Passwords do not match.'));
+      return;
+    }
+    if (!_agreeToTerms) {
+      emit(const SignupError('Please accept the Terms and Conditions.'));
       return;
     }
 
@@ -117,9 +171,9 @@ class SignupCubit extends Cubit<SignupState> {
 
     try {
       final request = EmailPasswordSignupRequest(
-        name: _name.trim(),
-        email: _email.trim(),
-        password: _password,
+        name: targetName,
+        email: targetEmail,
+        password: targetPassword,
       );
 
       final user = await signupRepository.createAccount(request);

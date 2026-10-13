@@ -7,6 +7,7 @@ import '../../../core/widgets/app_widgets.dart';
 import '../../models/coffee_item.dart';
 import '../../widgets/coffee_card.dart';
 import '../../widgets/coffee_svg_icon.dart';
+import '../../widgets/firestore_data_sheet.dart';
 import '../favorites/cubit/favorites_cubit.dart';
 import '../favorites/cubit/favorites_state.dart';
 import 'cubit/home_cubit.dart';
@@ -63,7 +64,7 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                     AppStrings.filterCoffees,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
-                    color: isDark ? Colors.white : const Color(0xFF241913),
+                    color: AppTheme.foreground(context),
                   ),
                   AppButton.text(
                     onPressed: () {
@@ -80,7 +81,7 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                 AppStrings.roastPreference,
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: isDark ? Colors.white70 : const Color(0xFF5B4F45),
+                color: AppTheme.muted(context),
               ),
               const SizedBox(height: 10),
               Wrap(
@@ -105,15 +106,11 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                               isSelected ? FontWeight.w700 : FontWeight.w500,
                           color: isSelected
                               ? Colors.white
-                              : (isDark
-                                  ? Colors.white
-                                  : const Color(0xFF241913)),
+                              : AppTheme.foreground(context),
                         ),
                         backgroundColor: isSelected
                             ? AppTheme.primaryCoffee
-                            : (isDark
-                                ? AppTheme.cardDark
-                                : const Color(0xFFF3ECE6)),
+                            : AppTheme.cardBackground(context),
                         onPressed: () {
                           context.read<HomeCubit>().setRoastFilter(roast);
                           Navigator.pop(bottomSheetContext);
@@ -167,65 +164,118 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Row(
-                                children: [
-                                  CoffeeSvgIcon(
-                                    assetName: AppImages.svgLocation,
-                                    size: 14,
-                                    color: Color(0xFFA59B93),
-                                    fallbackIcon: Icons.location_on_outlined,
-                                  ),
-                                  SizedBox(width: 4),
-                                  AppText(
-                                    AppStrings.location,
-                                    fontSize: 12,
-                                    color: Color(0xFFA59B93),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              const Row(
-                                children: [
-                                  AppText(
-                                    AppStrings.defaultLocation,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    size: 18,
-                                    color: Colors.white70,
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  children: [
+                                    CoffeeSvgIcon(
+                                      assetName: AppImages.svgLocation,
+                                      size: 14,
+                                      color: AppTheme.mutedTextDark,
+                                      fallbackIcon: Icons.location_on_outlined,
+                                    ),
+                                    SizedBox(width: 4),
+                                    AppText(
+                                      AppStrings.location,
+                                      fontSize: 12,
+                                      color: AppTheme.mutedTextDark,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Flexible(
+                                      child: AppText(
+                                        AppStrings.defaultLocation,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      size: 18,
+                                      color: Colors.white70,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          // Avatar
-                          GestureDetector(
-                            onTap: widget.onOpenProfile,
-                            child: Container(
-                              width: 44,
-                              height: 44,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppTheme.primaryCoffee,
-                                  width: 1.5,
+                          const SizedBox(width: 8),
+                          // Firestore Action Pill & Avatar
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () => FirestoreDataSheet.show(context),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: AppTheme.primaryCoffee
+                                          .withValues(alpha: 0.4),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.local_fire_department_rounded,
+                                        size: 14,
+                                        color: AppTheme.primaryCoffee,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      BlocBuilder<HomeCubit, HomeState>(
+                                        builder: (context, state) {
+                                          final count = state is HomeSuccess
+                                              ? state.allCoffees.length
+                                              : 0;
+                                          return AppText(
+                                            '$count',
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              child: const CustomCachedImage(
-                                imageUrl: AppImages.pngAvatar,
-                                borderRadius: BorderRadius.all(Radius.circular(22)),
-                                fit: BoxFit.cover,
-                                fallbackIcon: Icons.person,
+                              const SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: widget.onOpenProfile,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppTheme.primaryCoffee,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: const CustomCachedImage(
+                                    imageUrl: AppImages.pngAvatar,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    fit: BoxFit.cover,
+                                    fallbackIcon: Icons.person,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -254,13 +304,15 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                                     onChanged: (val) {
                                       context.read<HomeCubit>().setSearchQuery(val);
                                     },
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : const Color(0xFF241913),
                                       fontSize: 14,
                                     ),
                                     hintText: AppStrings.searchHint,
-                                    hintStyle: const TextStyle(
-                                      color: Color(0xFF988C83),
+                                    hintStyle: TextStyle(
+                                      color: AppTheme.muted(context),
                                       fontSize: 14,
                                     ),
                                     prefixWidget: const Padding(
@@ -268,7 +320,7 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                                       child: CoffeeSvgIcon(
                                         assetName: AppImages.svgCoffeeCup,
                                         size: 18,
-                                        color: Color(0xFFC67C4E),
+                                        color: AppTheme.primaryCoffee,
                                         fallbackIcon: Icons.search_rounded,
                                       ),
                                     ),
@@ -383,7 +435,7 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFED5151),
+                                    color: AppTheme.accentHeart,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const AppText(
@@ -419,17 +471,19 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
               builder: (context, state) {
                 final selectedCategory =
                     state is HomeSuccess ? state.selectedCategory : 'All Coffee';
+                final categories =
+                    state is HomeSuccess ? state.categories : CoffeeRepository.categories;
 
                 return SizedBox(
                   height: 40,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 22),
-                    itemCount: CoffeeRepository.categories.length,
+                    itemCount: categories.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: 10),
                     itemBuilder: (context, index) {
-                      final category = CoffeeRepository.categories[index];
+                      final category = categories[index];
                       final isSelected = selectedCategory == category;
 
                       return InkWell(
@@ -446,16 +500,12 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? AppTheme.primaryCoffee
-                                : (isDark
-                                    ? AppTheme.cardDark
-                                    : const Color(0xFFF3ECE6)),
+                                : AppTheme.cardBackground(context),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isSelected
                                   ? AppTheme.primaryCoffee
-                                  : (isDark
-                                      ? Colors.white.withValues(alpha: 0.08)
-                                      : const Color(0xFFE5DDD5)),
+                                  : AppTheme.border(context),
                             ),
                           ),
                           child: Center(
@@ -467,9 +517,7 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
                                   : FontWeight.w500,
                               color: isSelected
                                   ? Colors.white
-                                  : (isDark
-                                      ? const Color(0xFFA59B93)
-                                      : const Color(0xFF6E5F55)),
+                                  : AppTheme.muted(context),
                             ),
                           ),
                         ),
@@ -509,32 +557,44 @@ class _CoffeeHomeTabState extends State<CoffeeHomeTab> {
 
                   if (coffees.isEmpty) {
                     return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const CoffeeSvgIcon(
-                            assetName: AppImages.svgCoffeeCup,
-                            size: 54,
-                            color: AppTheme.primaryCoffee,
-                          ),
-                          const SizedBox(height: 14),
-                          AppText(
-                            AppStrings.noCoffeeFound,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF241913),
-                          ),
-                          const SizedBox(height: 6),
-                          AppText(
-                            AppStrings.noCoffeeFoundSubtitle,
-                            fontSize: 13,
-                            color: isDark
-                                ? Colors.white54
-                                : const Color(0xFF86766B),
-                          ),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const CoffeeSvgIcon(
+                              assetName: AppImages.svgCoffeeCup,
+                              size: 48,
+                              color: AppTheme.primaryCoffee,
+                            ),
+                            const SizedBox(height: 12),
+                            AppText(
+                              AppStrings.noCoffeeFound,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: AppTheme.foreground(context),
+                            ),
+                            const SizedBox(height: 6),
+                            AppText(
+                              AppStrings.noCoffeeFoundSubtitle,
+                              fontSize: 13,
+                              color: AppTheme.muted(context),
+                            ),
+                            const SizedBox(height: 14),
+                            SizedBox(
+                              width: 140,
+                              height: 38,
+                              child: AppButton.outlined(
+                                label: 'Clear Search',
+                                height: 38,
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  context.read<HomeCubit>().clearSearch();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }
